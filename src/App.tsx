@@ -6,6 +6,7 @@ import { Canvas } from "@react-three/fiber";
 import { Sheet, useColorScheme } from "@mui/joy";
 import Terrain from "./components/Terrain";
 import PointData from "./components/PointData";
+import Dummy from "./components/Dummy";
 
 export default function App() {
   const { setMode } = useColorScheme();
@@ -25,6 +26,7 @@ export default function App() {
       <VRButton />
       <Canvas shadows style={{ zIndex: 0 }}>
         <XR>
+          {process.env.NODE_ENV === "development" && <Dummy />}
           <Controllers />
           <Environment preset="city" />
           <Terrain />
