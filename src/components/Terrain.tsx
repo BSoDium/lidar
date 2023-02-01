@@ -1,14 +1,12 @@
-import React, { Suspense, useEffect, useState } from "react";
-import limboFrag from "../shaders/limbo.frag";
-import limboVert from "../shaders/limbo.vert";
+import React, { useEffect, useState, useRef } from "react";
+import limboFrag from "../shaders/terrain.frag";
+import limboVert from "../shaders/terrain.vert";
+import { useFrame } from "@react-three/fiber";
 
-export default function Terrain({
-  center = [0, 0, 0],
-  size = [1024, 1024, 1024],
-}: {
-  center?: [number, number, number];
-  size?: [number, number, number];
-}) {
+export default function Terrain() {
+  const shaderRef = useRef() as React.MutableRefObject<any>;
+  const meshRef = useRef() as React.MutableRefObject<any>;
+
   const [shaders, setShaders] = useState<{
     vert: string;
     frag: string;
@@ -25,24 +23,33 @@ export default function Terrain({
       });
   }, []);
 
-  return (
-    <Suspense fallback={null}>
-      <mesh
-        position={[0, 0, 0]}
-        rotation={[-Math.PI / 2, 0, 0]}
-        scale={[1 / 1024, 1 / 1024, 1 / 1024]}
-      >
-        <planeBufferGeometry args={[1024, 1024, 256, 256]} />
-        <shaderMaterial
-          uniforms={{
-            // Feed the scaling constant for the heightmap
-            bumpScale: { value: 50 },
-          }}
-          // Feed the shaders as strings
-          vertexShader={shaders?.vert}
-          fragmentShader={shaders?.frag}
-        />
-      </mesh>
-    </Suspense>
-  );
+  useFrame(({ clock, camera }) => {
+    const { x, z } = camera.position;
+
+    if (shaders) {
+      shaderRef.current.uniforms.time.value = clock.getElapsedTime() * 0.05;
+      meshRef.current.position.set(x, 0, z);
+    }
+  });
+
+  return shaders ? (
+    <mesh
+      ref={meshRef}
+      position={[0, 0, 0]}
+      rotation={[-Math.PI / 2, 0, 0]}
+      scale={[0.3, 0.3, 0.3]}
+    >
+      <planeGeometry args={[1024, 1024, 256, 256]} />
+      <shaderMaterial
+        ref={shaderRef}
+        uniforms={{
+          time: { value: 0.0 },
+          amplitude: { value: 20.0 },
+        }}
+        // Feed the shaders as strings
+        vertexShader={shaders?.vert}
+        fragmentShader={shaders?.frag}
+      />
+    </mesh>
+  ) : null;
 }

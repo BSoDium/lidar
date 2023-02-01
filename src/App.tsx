@@ -5,6 +5,7 @@ import "@react-three/fiber";
 import { Canvas } from "@react-three/fiber";
 import { Sheet, useColorScheme } from "@mui/joy";
 import Terrain from "./components/Terrain";
+import PointData from "./components/PointData";
 
 export default function App() {
   const { setMode } = useColorScheme();
@@ -27,17 +28,18 @@ export default function App() {
           <Controllers />
           <Environment preset="city" />
           <Terrain />
-          <group position={[0, 0, 0]}>
+          <PointData />
+          <group position={[0, 0.1, 0]}>
             <Grid
-              position={[0, -0.05, 0]}
+              position={[0, 0, 0]}
               renderOrder={-1}
               args={[40, 40]}
               cellSize={0.5}
-              cellThickness={1}
-              cellColor="#6b6767"
               sectionSize={4}
+              cellThickness={1}
+              cellColor="#67696b"
               sectionThickness={1.5}
-              sectionColor="#b13c69"
+              sectionColor="#717f8e"
               fadeDistance={30}
               fadeStrength={1}
               followCamera

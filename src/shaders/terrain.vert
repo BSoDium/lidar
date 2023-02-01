@@ -1,9 +1,18 @@
+//
+// GLSL textureless classic 3D noise "cnoise",
+// with an RSL-style periodic variant "pnoise".
+// Author:  Stefan Gustavson (stefan.gustavson@liu.se)
+// Version: 2011-10-11
+//
+// Many thanks to Ian McEwan of Ashima Arts for the
+// ideas for permutation and gradient selection.
+//
+// Copyright (c) 2011 Stefan Gustavson. All rights reserved.
+// Distributed under the MIT license. See LICENSE file.
+// https://github.com/ashima/webgl-noise
+//
 
-varying vec2 vUv;
-varying float noise;
-uniform float time;
-  
-  vec3 mod289(vec3 x)
+vec3 mod289(vec3 x)
 {
   return x - floor(x * (1.0 / 289.0)) * 289.0;
 }
@@ -93,7 +102,7 @@ float cnoise(vec3 P)
   vec3 fade_xyz = fade(Pf0);
   vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
   vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
   return 2.2 * n_xyz;
 }
 
@@ -163,46 +172,56 @@ float pnoise(vec3 P, vec3 rep)
   vec3 fade_xyz = fade(Pf0);
   vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
   vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
   return 2.2 * n_xyz;
 }
 
-float turbulence( vec3 p ) {
-    float w = 100.0;
-    float t = -.5;
-    for (float f = 1.0 ; f <= 10.0 ; f++ ){
-        float power = pow( 2.0, f );
-        t += abs( pnoise( vec3( power * p ), vec3( 10.0, 10.0, 10.0 ) ) / power );
-    }
-    return t;
+
+// Ashima code above
+
+
+uniform float time;
+uniform float amplitude;
+
+varying float displacement;
+varying vec2 vUV;
+
+float gaussian(float x, float sigma, float mu)
+{
+    return exp(-((x - mu) * (x - mu)) / (2.0 * sigma * sigma));
 }
 
-// The code above is imported from Ashima Arts' Perlin Noise Shader
+float softplus(float x)
+{
+    return log(1.0 + exp(x));
+}
 
-// A uniform to contain the scaling constant
-uniform float bumpScale;
-
-// Varyings are variables whose values are decided in the vertext shader
-// But whose values are then needed in the fragment shader
-
-// A variable to store the height of the point
-varying float vAmount;
-// The UV mapping coordinates of a vertex
-varying vec2 vUV;
+float relu(float x)
+{
+    return max(0.0, x);
+}
 
 void main()
 {
     // The "coordinates" in UV mapping representation
     vUV = uv;
 
-    // The heightmap data at those coordinates (from the code above)
-    vec4 bumpData = pnoise( vec3( 10.0 * position, 10.0 ), vec3( 100.0, 100.0, 100.0 ) );
+    // Get the displacement from the noise function and the uv coordinates
+    displacement = pnoise(vec3(uv * 10.0, time), vec3(100.0));
 
-    // height map is grayscale, so it doesn't matter if you use r, g, or b.
-    vAmount = bumpData.r;
+    displacement = displacement + pnoise(vec3(uv * 30.0, time), vec3(100.0));
+
+    // Calculate the distance to the center of the terrain (0.5, 0.5)
+    float distance = pow(position.x - 0.5, 2.0) + pow(position.y - 0.5, 2.0);
+
+    // Apply a gaussian filter to the displacement
+    displacement = displacement * (1.0 - gaussian(distance, 20000.0, 0.0));
+
+    // Apply a relu function to the displacement
+    displacement = relu(displacement);
 
     // move the position along the normal
-    vec3 newPosition = position + normal * bumpScale * vAmount;
+    vec3 newPosition = position + normal * displacement * amplitude;
 
     // Compute the position of the vertex using a standard formula
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
