@@ -28,7 +28,7 @@ export default function Terrain() {
 
     if (shaders) {
       shaderRef.current.uniforms.time.value = clock.getElapsedTime() * 0.05;
-      // meshRef.current.position.set(x, 0, z);
+      meshRef.current.position.set(x, 0, z);
     }
   });
 
