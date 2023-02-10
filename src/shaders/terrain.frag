@@ -3,7 +3,7 @@ varying float displacement;
 
 void main()
 {
-    float brightness = (displacement) * 0.05;
-    float alpha = brightness * 0.25;
-    gl_FragColor = vec4(brightness, brightness, brightness, alpha);
+    float brightness = displacement * 0.5;
+    float alpha = displacement;
+    gl_FragColor = vec4(brightness * 0.95, brightness, brightness, alpha);
 }

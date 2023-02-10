@@ -6,7 +6,10 @@ import { Canvas } from "@react-three/fiber";
 import { Sheet, useColorScheme } from "@mui/joy";
 import Terrain from "./components/Terrain";
 import PointData from "./components/PointData";
-import Dummy from "./components/Dummy";
+import Dummy from "./components/models/Dummy";
+import Room from "./components/models/Room";
+import Dashboard from "./components/Dashboard";
+import MazeView from "./components/MazeView";
 
 export default function App() {
   const { setMode } = useColorScheme();
@@ -30,23 +33,26 @@ export default function App() {
           <Controllers />
           <Environment preset="city" />
           <Terrain />
+          <Room />
           <PointData />
+          <Dashboard />
           <group position={[0, 0.1, 0]}>
             <Grid
               position={[0, 0, 0]}
               renderOrder={-1}
               args={[40, 40]}
-              cellSize={0.5}
+              cellSize={1}
               sectionSize={4}
               cellThickness={1}
               cellColor="#67696b"
               sectionThickness={1.5}
-              sectionColor="#717f8e"
-              fadeDistance={30}
+              sectionColor="#58616a"
+              fadeDistance={50}
               fadeStrength={1}
               followCamera
               infiniteGrid
             />
+            <MazeView mazeSize={19} wireframe />
           </group>
         </XR>
         <ambientLight intensity={0.1} />

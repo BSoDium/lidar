@@ -215,7 +215,7 @@ void main()
     float distance = pow(position.x - 0.5, 2.0) + pow(position.y - 0.5, 2.0);
 
     // Apply a gaussian filter to the displacement
-    displacement = displacement * (1.0 - gaussian(distance, 20000.0, 0.0));
+    displacement = displacement * (1.0 - gaussian(distance, 10000.0, 0.0));
 
     // Apply a relu function to the displacement
     displacement = relu(displacement);
