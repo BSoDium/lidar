@@ -34,9 +34,8 @@ export default function App() {
           <Environment preset="city" />
           <Terrain />
           <Room />
-          <PointData />
           <Dashboard />
-          <group position={[0, 0.1, 0]}>
+          <group position={[0, 0, 0]}>
             <Grid
               position={[0, 0, 0]}
               renderOrder={-1}

@@ -1,17 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
-import { Sheet } from "@mui/joy";
-import {
-  ContactShadows,
-  Environment,
-  GizmoHelper,
-  GizmoViewport,
-  Grid,
-  OrbitControls,
-} from "@react-three/drei";
 import MorphingMesh from "../utils/MorphingMesh";
 import { Cube, CulledFaces } from "../utils/Geometry";
+import { useController, useInteraction, useXR } from "@react-three/xr";
+import { Point, PointMaterial, Points } from "@react-three/drei";
+import PointData from "./PointData";
+import { useFrame, useThree } from "@react-three/fiber";
 
 export interface MazeCell {
   x: number;
@@ -85,7 +79,7 @@ const Walls = ({
   const { cells } = maze;
 
   const mesh = new MorphingMesh();
-  const ref = useRef() as React.MutableRefObject<THREE.Mesh>;
+  const meshRef = useRef() as React.MutableRefObject<THREE.Mesh>;
 
   cells.forEach((cellRow, i) => {
     cellRow.forEach((cell, j) => {
@@ -119,20 +113,23 @@ const Walls = ({
   mesh.clean();
 
   return (
-    <mesh
-      ref={ref}
-      castShadow
-      position={[0, 0, 0]}
-      scale={[3, 3, 3]}
-      geometry={mesh.toGeometry()}
-    >
-      <meshStandardMaterial
-        color="#e33365"
-        wireframe={wireframe}
-        roughness={1}
-        flatShading
-      />
-    </mesh>
+    <>
+      <PointData environmentRef={meshRef} />
+      <mesh
+        ref={meshRef}
+        castShadow
+        position={[0, 0, 0]}
+        scale={[3, 3, 3]}
+        geometry={mesh.toGeometry()}
+      >
+        <meshStandardMaterial
+          color="#e33365"
+          wireframe={wireframe}
+          roughness={1}
+          flatShading
+        />
+      </mesh>
+    </>
   );
 };
 
@@ -143,13 +140,10 @@ export interface MazeViewSettings {
 
 export default function MazeView({ mazeSize, wireframe }: MazeViewSettings) {
   const [maze, setMaze] = useState<Maze>();
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     generateMaze(mazeSize, mazeSize).then((maze) => {
       setMaze(maze);
-      setIsLoading(false);
     });
   }, [mazeSize]);
 
