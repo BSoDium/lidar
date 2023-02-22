@@ -14,7 +14,7 @@ BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 Mesh.prototype.raycast = acceleratedRaycast;
 
 const lidarArray = new LidarArray();
-const pointData = new Float32Array(10000);
+const pointData = new Float32Array(100000);
 let pointIndex = 0;
 let lastScan = 0;
 
