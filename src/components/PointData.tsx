@@ -87,7 +87,7 @@ export default function PointData({
           array={pointData}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.05} sizeAttenuation />
+      <pointsMaterial size={0.02} sizeAttenuation />
     </points>
   );
 }
