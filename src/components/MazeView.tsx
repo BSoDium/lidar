@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import MorphingMesh from "../utils/MorphingMesh";
 import { Cube, CulledFaces } from "../utils/Geometry";
-import { useController, useInteraction, useXR } from "@react-three/xr";
-import { Point, PointMaterial, Points } from "@react-three/drei";
 import PointData from "./PointData";
-import { useFrame, useThree } from "@react-three/fiber";
 
 export interface MazeCell {
   x: number;
@@ -109,6 +106,19 @@ const Walls = ({
         mesh.addMesh(vertices, faces);
       }
     });
+
+    // Add the floor (covering the entire maze)
+    const vertices = [
+      new THREE.Vector3(-cells.length / 2, 0, -cellRow.length / 2),
+      new THREE.Vector3(-cells.length / 2, 0, cellRow.length / 2),
+      new THREE.Vector3(cells.length / 2, 0, cellRow.length / 2),
+      new THREE.Vector3(cells.length / 2, 0, -cellRow.length / 2),
+    ];
+    const faces = [
+      { a: 0, b: 1, c: 2, normal: new THREE.Vector3(0, 1, 0) },
+      { a: 0, b: 2, c: 3, normal: new THREE.Vector3(0, 1, 0) },
+    ] as THREE.Face[];
+    mesh.addMesh(vertices, faces);
   });
   mesh.clean();
 
@@ -117,6 +127,7 @@ const Walls = ({
       <PointData environmentRef={meshRef} />
       <mesh
         ref={meshRef}
+        visible={process.env.NODE_ENV === "development"}
         castShadow
         position={[0, 0, 0]}
         scale={[3, 3, 3]}

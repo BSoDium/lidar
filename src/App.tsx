@@ -5,7 +5,6 @@ import "@react-three/fiber";
 import { Canvas } from "@react-three/fiber";
 import { Sheet, useColorScheme } from "@mui/joy";
 import Terrain from "./components/Terrain";
-import PointData from "./components/PointData";
 import Dummy from "./components/models/Dummy";
 import Room from "./components/models/Room";
 import Dashboard from "./components/Dashboard";

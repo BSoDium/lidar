@@ -133,6 +133,7 @@ export default class MorphingMesh {
     geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
     geometry.setIndex(new THREE.BufferAttribute(faces, 1));
     geometry.computeVertexNormals();
+    geometry.computeBoundsTree();
 
     return geometry;
   }

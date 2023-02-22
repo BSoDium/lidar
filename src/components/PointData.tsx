@@ -1,74 +1,93 @@
-import { Point, PointMaterial, Points } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useController } from "@react-three/xr";
-import React, { useMemo } from "react";
-import { Vector3 } from "three";
-import * as THREE from "three";
+import { useController, useXREvent } from "@react-three/xr";
+import React, { useState } from "react";
+import { BufferGeometry, Mesh, Vector3, Points } from "three";
+import LidarArray from "../utils/LidarArray";
+import {
+  computeBoundsTree,
+  disposeBoundsTree,
+  acceleratedRaycast,
+} from "three-mesh-bvh";
 
-let data: number[][] = [];
-const raycaster = new THREE.Raycaster();
-const arrowHelper = new THREE.ArrowHelper(
-  new THREE.Vector3(0, 0, -1),
-  new THREE.Vector3(0, 0, 0),
-  5,
-  0xff0000
-);
+BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+Mesh.prototype.raycast = acceleratedRaycast;
+
+const lidarArray = new LidarArray();
+const pointData = new Float32Array(10000);
+let pointIndex = 0;
+let lastScan = 0;
 
 export default function PointData({
   environmentRef,
 }: {
-  environmentRef: React.MutableRefObject<THREE.Mesh>;
+  environmentRef: React.MutableRefObject<Mesh>;
 }) {
   const rightController = useController("right");
-  const ref =
-    React.useRef<THREE.Points>() as React.MutableRefObject<THREE.Points>;
+  const pointRef = React.useRef<Points>() as React.MutableRefObject<Points>;
 
   const { scene } = useThree();
 
-  scene.add(arrowHelper);
+  const [scanning, setScanning] = useState(false);
 
-  useFrame(() => {
+  process.env.NODE_ENV === "development" &&
+    lidarArray.getObjects().forEach((obj) => {
+      scene.add(obj);
+    });
+
+  useFrame((state, delta, xrFrame) => {
     if (!rightController) return;
 
     const { controller } = rightController;
-    const forward = new THREE.Vector3(0, 0, -1);
+    const forward = new Vector3(0, 0, -1);
     forward.applyQuaternion(controller.quaternion);
-    const position = new THREE.Vector3().copy(controller.position);
+    const position = new Vector3().copy(controller.position);
 
-    // Cast a ray from the controller to the mesh and get the intersection point
-    raycaster.ray.origin.copy(position);
-    raycaster.ray.direction.copy(forward);
+    // Update the lidar array to match the controller
+    lidarArray.setOrigin(position);
+    lidarArray.setDirection(forward);
 
-    arrowHelper.position.copy(position);
-    arrowHelper.setDirection(forward);
-    arrowHelper.setLength(5);
-    arrowHelper.setColor(new THREE.Color(0xff0000));
+    lidarArray.intersectObject(environmentRef.current);
+  });
 
-    const intersects = raycaster.intersectObject(environmentRef.current);
+  useFrame((state, delta, xrFrame) => {
+    if (!scanning) return;
+    if (Date.now() - lastScan < 200) return;
+    lastScan = Date.now();
 
-    if (intersects.length > 0) {
-      const { x, y, z } = intersects[0].point;
-      if (data.length > 1000) data.shift();
-      data.push([x, y, z]);
+    lidarArray.intersectObject(environmentRef.current).forEach((intersects) => {
+      if (intersects.length === 0) return;
+      if (pointIndex >= pointData.length) pointIndex = 0;
 
-      arrowHelper.setLength(intersects[0].distance);
-      arrowHelper.setColor(new THREE.Color(0x00ff00));
+      const { point } = intersects[0];
+      const { x, y, z } = point;
+      pointData[pointIndex++] = x;
+      pointData[pointIndex++] = y;
+      pointData[pointIndex++] = z;
 
-      ref.current.geometry.attributes.position.needsUpdate = true;
-    }
+      pointRef.current.geometry.attributes.position.needsUpdate = true;
+    });
+  });
+
+  useXREvent("squeezestart", () => {
+    setScanning(true);
+  });
+
+  useXREvent("squeezeend", () => {
+    setScanning(false);
   });
 
   return (
-    <points ref={ref}>
-      <PointMaterial size={0.01} sizeAttenuation={false} />
+    <points ref={pointRef}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={data.length}
-          array={new Float32Array(data.flat())}
           itemSize={3}
+          count={pointData.length / 3}
+          array={pointData}
         />
       </bufferGeometry>
+      <pointsMaterial size={0.05} sizeAttenuation />
     </points>
   );
 }
