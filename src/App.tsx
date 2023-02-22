@@ -77,7 +77,11 @@ export default function App() {
         </Button>
       </Box>
       <VRButton />
-      <Canvas shadows style={{ zIndex: 0 }}>
+      <Canvas
+        shadows
+        style={{ zIndex: 0 }}
+        camera={{ position: [8, 1.5, 8], fov: 25 }}
+      >
         <XR>
           {process.env.NODE_ENV === "development" && <Dummy />}
           <Controllers />
@@ -106,7 +110,7 @@ export default function App() {
         </XR>
         <ambientLight intensity={0.1} />
         {/* <ContactShadows position={[0, 0, 0]} scale={20} blur={2} far={4.5} /> */}
-        <OrbitControls />
+        <OrbitControls autoRotate autoRotateSpeed={0.5} />
       </Canvas>
     </Sheet>
   );
