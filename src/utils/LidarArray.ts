@@ -61,12 +61,11 @@ export default class LidarArray {
     return this._array.map((beam) => beam.helper)
   }
 
-  setDirection(direction: Vector3) {
+  setDirection(direction: Vector3, right: Vector3, up: Vector3) {
     this._array.forEach((beam) => {
       // Shift the raycaster direction by the shift vector (in radians)
       const shift = beam.shift.clone().multiplyScalar(Math.PI / 180)
-      // FIXME: This formula doesn't seem to apply the shift correctly
-      const shiftedDirection = direction.clone().applyAxisAngle(new Vector3(0, 0, 1), shift.x).applyAxisAngle(new Vector3(0, 1, 0), shift.y)
+      const shiftedDirection = direction.clone().applyAxisAngle(right, shift.x).applyAxisAngle(up, shift.y)
       beam.raycaster.ray.direction.copy(shiftedDirection)
       beam.helper.setDirection(shiftedDirection)
     })

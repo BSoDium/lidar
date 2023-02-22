@@ -40,12 +40,16 @@ export default function PointData({
 
     const { controller } = rightController;
     const forward = new Vector3(0, 0, -1);
+    const right = new Vector3(1, 0, 0);
+    const up = new Vector3(0, 1, 0);
     forward.applyQuaternion(controller.quaternion);
+    right.applyQuaternion(controller.quaternion);
+    up.applyQuaternion(controller.quaternion);
     const position = new Vector3().copy(controller.position);
 
     // Update the lidar array to match the controller
     lidarArray.setOrigin(position);
-    lidarArray.setDirection(forward);
+    lidarArray.setDirection(forward, right, up);
 
     lidarArray.intersectObject(environmentRef.current);
   });
