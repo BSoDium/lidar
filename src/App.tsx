@@ -1,9 +1,17 @@
 import React, { useEffect } from "react";
+import "@react-three/fiber";
 import { XR, VRButton, Controllers } from "@react-three/xr";
 import { Environment, Grid, OrbitControls } from "@react-three/drei";
-import "@react-three/fiber";
+import { AiOutlineHeart } from "react-icons/ai";
 import { Canvas } from "@react-three/fiber";
-import { Box, Sheet, Stack, Typography, useColorScheme } from "@mui/joy";
+import {
+  Box,
+  Button,
+  Sheet,
+  Stack,
+  Typography,
+  useColorScheme,
+} from "@mui/joy";
 import Terrain from "./components/Terrain";
 import Dummy from "./components/models/Dummy";
 import Room from "./components/models/Room";
@@ -32,7 +40,6 @@ export default function App() {
           top: "0",
           left: "0",
           width: "100%",
-          pointerEvents: "none",
           background:
             "linear-gradient(180deg, var(--joy-palette-background-surface) 0%, rgba(0, 0, 0, 0) 100%)",
           zIndex: 1,
@@ -55,6 +62,19 @@ export default function App() {
           <br />
           Please connect a VR headset to play.
         </Typography>
+        <Button
+          sx={{
+            marginTop: 3,
+            boxShadow: "md",
+          }}
+          component="a"
+          href="https://github.com/sponsors/BSoDium"
+          target="_blank"
+          startDecorator={<AiOutlineHeart size={20} />}
+          color="info"
+        >
+          Support the developer
+        </Button>
       </Box>
       <VRButton />
       <Canvas shadows style={{ zIndex: 0 }}>
