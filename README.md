@@ -1,9 +1,9 @@
 ![Alt text](public/android-chrome-192x192.png)
 # Lidar
 
-A virtual reality game where you have to find your way out of a maze you can't see. Use your lidar (basically a laser coupled with a camera) to find your way out and avoid the obstacles.
+A virtual reality game where you have to find your way out of a maze you can't see. Use your lidar (basically a laser coupled with a light sensor) to find your way out and avoid the obstacles.
 
-The following schematic illustrates how a actual lidar works[^1]:
+The following schematic illustrates how an actual lidar works[^1]:
 
 ![Alt text](docs/res/lidar_schematic.jpg)
 
