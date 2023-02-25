@@ -1,13 +1,13 @@
 ![Alt text](public/android-chrome-192x192.png)
 # Lidar
 
-A maze generator and three-dimensional visualizer for the web.
+A virtual reality game where you have to find your way out of a maze you can't see. Use your lidar (basically a laser coupled with a camera) to find your way out and avoid the obstacles.
 
-Lidar is a web app that generates random mazes and visualizes them in 3D. It is written in JavaScript and uses the Three.js library for 3D rendering.
+This project is still in early development. The game is playable but many features are still missing, and will hopefully be added in the future.
 
 ## Usage
 
-The app is hosted at [https://lidar.bsodium.fr/](https://lidar.bsodium.fr/). You can also download the source code and run it locally. The app is written in TypeScript React and uses [Joy-UI](https://mui.com/) for the UI.
+The app is hosted at [https://lidar.bsodium.fr/](https://lidar.bsodium.fr/). You can also download the source code and run it locally. The app is written in TypeScript React, uses [Joy-UI](https://mui.com/) for the UI and [Three.js](https://threejs.org/) for WebGL and WebXR rendering.
 
 ## License
 
