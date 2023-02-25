@@ -3,6 +3,10 @@
 
 A virtual reality game where you have to find your way out of a maze you can't see. Use your lidar (basically a laser coupled with a camera) to find your way out and avoid the obstacles.
 
+The following schematic illustrates how a actual lidar works[^1]:
+
+![Alt text](docs/res/lidar_schematic.jpg)
+
 This project is still in early development. The game is playable but many features are still missing, and will hopefully be added in the future.
 
 ## Usage
@@ -12,3 +16,6 @@ The app is hosted at [https://lidar.bsodium.fr/](https://lidar.bsodium.fr/). You
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+[^1]: [Choi, Hyun & Park, No-Cheol & Kim, Wan-Chin. (2020). Optical system design for light detection and ranging with ultra-wide field-of-view using liquid lenses. Microsystem Technologies. 26. 10.1007/s00542-019-04490-4.](https://www.researchgate.net/publication/333379409_Optical_system_design_for_light_detection_and_ranging_with_ultra-wide_field-of-view_using_liquid_lenses/related)
