@@ -7,15 +7,15 @@ A virtual reality game where you have to find your way out of a maze you can't s
 
 ## Inspiration
 
-This game is inspired by datæ's Garry's Mod Addon LIDAR[^1], an experimental gamemode which allows players to scan a map. The horror mechanic is pretty powerful, as no moving entity can be seen as long as the player has not scanned it. This allows for some pretty 
+This game is inspired by **[datæ](https://steamcommunity.com/id/75651121243836)**'s Garry's Mod Addon LIDAR[^1], an experimental game-mode which allows players to scan a map. The horror mechanic is pretty powerful, as no moving entity can be seen as long as the player has not scanned it. This allows for some pretty scary situations, especially in VR, where the scale of the environment is much more apparent.
 
-As a matter of fact, Lidar is an actual technology used in a broad range of applications, such as autonomous vehicles, robotics, and even in the medical field. It is a laser-based system that uses a laser to scan the environment and detect the distance to objects. 
+As a matter of fact, Lidar is an actual technology used in a broad range of applications, such as autonomous vehicles, robotics, and even in the medical field. It is a laser-based system that, as its name suggests, uses a laser to scan the environment and detect the distance to objects. 
 
-The laser is coupled with a light sensor, which detects the reflected light and allows the system to determine the distance to the object. It laser is usually pulsed, and the sensor measures the time between the pulse and the reflected light. The system is commonly mounted on a rotating platform, which allows it to scan a 360° field of view. 
+The laser is coupled with a light sensor, which detects the reflected light and allows the system to determine the distance to the object. It is usually pulsed at a reasonably low frequency (2-10 Hz), and the sensor measures the time between the pulse and the reflected light. The system is commonly mounted on a rotating platform, which allows it to scan a 360° field of view. 
 
-The following schematic illustrates how lidar module works[^2]:
-
-![Lidar schematic](docs/res/lidar_schematic.jpg)
+|![Lidar schematic](docs/res/lidar_schematic.png)|
+|--|
+|Schematic of an autonomous car lidar module[^2].|
 
 In this game, the module is mounted on the player's controller. When enabled, an array of lasers is fired from the controller, and the reflected light is detected by the sensor, which generates on each pulse a low resolution depth map. Coupled to the direction of the controller, this allows the system to generate a point cloud of the environment.
 
@@ -25,7 +25,7 @@ The app is hosted at [https://lidar.bsodium.fr/](https://lidar.bsodium.fr/). You
 
 To scan your surroundings, use your right controller to point the laser array at any surface. Squeeze the trigger to start capturing point cloud data, and release it to stop. The captured data will be displayed as a point cloud in the scene.
 
-Currently, movement is not implemented, so you can only scan a small part of the maze. Obviously, you could just move around in the real world, but since the maze is appoximately 40m x 40m, it would be a bit impractical.
+Currently, movement is not implemented, so you can only scan a small part of the maze. Obviously, you could just move around in the real world, but since the maze is approximately 40m x 40m, it would be a bit impractical.
 
 ## Screenshots
 
@@ -37,9 +37,9 @@ Currently, movement is not implemented, so you can only scan a small part of the
 | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Another point of view of the same scene. One can identify the grid pattern of the point cloud, which is due to the laser array being square-shaped. |
 
-| ![Screenshot 2](docs/res/screenshot_2.png)                                                                                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Here is a first person view of the maze (in VR mode, recorded using the WebXR extension[^3] by Mozilla), the controllers are barely visible due to poor contrast, but can still be seen in the bottom half of the image. |
+| ![Screenshot 2](docs/res/screenshot_2.png)                                                                                                                                                                                    |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Here is a first person view of the maze (in VR mode, recorded using the WebXR extension[^3] by Mozilla), the controllers are barely visible due to poor contrast, but can still be discerned in the bottom half of the image. |
 
 ## Performance
 
@@ -55,7 +55,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 [^1]: [LIDAR, Gamemode Addon for Garry's Mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2813176307&searchtext=)
 
-[^2]: [Choi, Hyun & Park, No-Cheol & Kim, Wan-Chin. (2020). Optical system design for light detection and ranging with ultra-wide field-of-view using liquid lenses. Microsystem Technologies. 26. 10.1007/s00542-019-04490-4.](https://www.researchgate.net/publication/333379409_Optical_system_design_for_light_detection_and_ranging_with_ultra-wide_field-of-view_using_liquid_lenses/related)
+[^2]: [Royo, Santiago, and Maria Ballesta-Garcia. 2019. "An Overview of Lidar Imaging Systems for Autonomous Vehicles" Applied Sciences 9, no. 19: 4093. https://doi.org/10.3390/app9194093](https://www.mdpi.com/544958)
 
 [^3]: [WebXR Extension for Firefox](https://addons.mozilla.org/en-US/firefox/addon/webxr-api-emulator/)
 
