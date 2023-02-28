@@ -31,7 +31,7 @@ Currently, movement is not implemented, so you can only scan a small part of the
 
 | ![Screenshot 0](docs/res/screenshot_0.png)                                                                                                                                                                                             |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Overview of the scanned maze. Here, the player has places his controller over the wall, in order to scan otherwise inaccessible areas. As expected, the point cloud is less dense in regions located further away from the controller. |
+| Overview of the scanned maze. Here, the player has placed his controller over the wall, in order to scan otherwise inaccessible areas. As expected, the point cloud is less dense in regions located further away from the controller. |
 
 | ![Screenshot 1](docs/res/screenshot_1.png)                                                                                                          |
 | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -40,6 +40,14 @@ Currently, movement is not implemented, so you can only scan a small part of the
 | ![Screenshot 2](docs/res/screenshot_2.png)                                                                                                                                                                               |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Here is a first person view of the maze (in VR mode, recorded using the WebXR extension[^3] by Mozilla), the controllers are barely visible due to poor contrast, but can still be seen in the bottom half of the image. |
+
+## Performance
+
+The current implementation of the point cloud rendering is pretty basic, with points being saved in a fixed-length vertex buffer, which is then displayed as a mesh with a point cloud material. This comes with several limitations:
+- The amount of rendered points is limited by the size of the vertex buffer. This is currently set to 100000 points, therefore going unnoticed as long as the user does not move around too much, but it will become a problem as soon as locomotion is implemented.
+- The buffer being of fixed size, it is initialized with a default value, which is currently set to (0, 0, 0). This means that the point cloud will be displayed in the origin of the world, looking like a big glitchy cluster of white dots.
+
+Still, some optimizations have been implemented to improve the performance of the point cloud generation, and more specifically the ray casting and collision detection. When it comes accelerating this process, three-mesh-bvh[^4] has been a life-saver, allowing for incredibly fast and accurate results with intricate meshes.
 
 ## License
 
@@ -50,3 +58,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [^2]: [Choi, Hyun & Park, No-Cheol & Kim, Wan-Chin. (2020). Optical system design for light detection and ranging with ultra-wide field-of-view using liquid lenses. Microsystem Technologies. 26. 10.1007/s00542-019-04490-4.](https://www.researchgate.net/publication/333379409_Optical_system_design_for_light_detection_and_ranging_with_ultra-wide_field-of-view_using_liquid_lenses/related)
 
 [^3]: [WebXR Extension for Firefox](https://addons.mozilla.org/en-US/firefox/addon/webxr-api-emulator/)
+
+[^4]: [Three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh)
