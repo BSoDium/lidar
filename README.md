@@ -29,14 +29,17 @@ Currently, movement is not implemented, so you can only scan a small part of the
 
 ## Screenshots
 
-Overview of the scanned maze. Here, the player has places his controller over the wall, in order to scan otherwise inaccessible areas. As expected, the point cloud is less dense in regions located further away from the controller.
-![Screenshot 0](docs/res/screenshot_0.png)
+| ![Screenshot 0](docs/res/screenshot_0.png)                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overview of the scanned maze. Here, the player has places his controller over the wall, in order to scan otherwise inaccessible areas. As expected, the point cloud is less dense in regions located further away from the controller. |
 
-Another point of view of the same scene. One can identify the grid pattern of the point cloud, which is due to the laser array being square-shaped.
-![Screenshot 1](docs/res/screenshot_1.png)
+| ![Screenshot 1](docs/res/screenshot_1.png)                                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Another point of view of the same scene. One can identify the grid pattern of the point cloud, which is due to the laser array being square-shaped. |
 
-Here is a first person view of the maze (in VR mode, recorded using the WebXR extension[^3] by Mozilla)
-![Screenshot 2](docs/res/screenshot_2.png)
+| ![Screenshot 2](docs/res/screenshot_2.png)                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Here is a first person view of the maze (in VR mode, recorded using the WebXR extension[^3] by Mozilla), the controllers are barely visible due to poor contrast, but can still be seen in the bottom half of the image. |
 
 ## License
 
